@@ -1,0 +1,88 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>          All communication (APK <-> API, API <-> LDAP) happens over HTTPS, ensuring data is encrypted and secure.                <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+=>> To fetch data from the LDAP server after logging in to the APK using the API, you can use a step-by-step flow where both authentication and authorization processes ensure that the API calls to retrieve data are legitimate. Here's the full scenario:
+🌏🛡️👉
+
+Step-by-Step Flow:
+1. User Login via APK (Authentication):
+👉 User enters credentials (username and password) into the APK.
+👉 The APK sends these credentials to the API (e.g., /login) over HTTPS.
+👉 The API authenticates the credentials by verifying them against your LDAP server.
+      ●  The LDAP server may return an acknowledgment if the credentials are correct.
+      ●  If valid, the API generates a JWT token and returns it to the APK.
+
+
+🌏 Key Step:
+> The JWT token is signed using a secret key or public/private key pair and includes the user’s information (like user ID) and an expiry time.
+> The APK stores this token securely (e.g., encrypted SharedPreferences).
+
+
+
+2. Fetching Data from LDAP (Authorization):
+> After login, the user wants to retrieve some data from the LDAP server via an API call. Here’s how the process works:
+
+🌏 JWT Token in API Request:
+:- The APK initiates an API call (e.g., /getLDAPData) to fetch data from the LDAP server.
+:- In this API call, the APK includes the JWT token in the Authorization header like this:
+
+>>>>>>>> Authorization: Bearer <JWT-Token>   <<<<<<<<<<<<<<<
+
+
+
+
+🌏 API Verifies JWT Token:
+> The API server checks if the JWT token is valid:
+> Signature verification: The server verifies the JWT signature using its secret or public key. 
+> Token expiry check: It checks if the token is still valid (not expired).
+> Payload validation: The API verifies the user’s identity and permissions from the JWT payload.
+> If the JWT token is valid, the API proceeds to the next step. If not, it rejects the request.
+
+(●'◡'●)
+
+👉 API Fetches Data from LDAP:
+ ● The API (which acts as a middleman or proxy) makes a request to the LDAP server to retrieve the data the user requested.
+ ● The API can use the user’s identity (from the JWT) to fetch specific data related to that user.
+ ● The LDAP server verifies that the API has legitimate access, as the API has already authenticated the user.
+
+
+🌏 Key Points in Verification:
+👉 The LDAP server trusts that the API is legitimate because:
+● The API is on a secure network and authorized to interact with the LDAP server.
+● The API may use a pre-configured service account or credentials to authenticate itself to the LDAP server, ensuring the call is legitimate.
+● The API is responsible for user verification, so LDAP doesn't need to re-check the user’s identity directly.
+
+
+
+👉 Response from LDAP:
+●  Once the LDAP server returns the requested data to the API, the API forwards this data back to the APK as the response to the user’s request.
+
+
+
+3. Client-Side (APK) Displays Data:
+● The APK receives the LDAP data from the API and displays it to the user.
+●  How is Legitimacy Verified in API Calls?
+
+
+
+🌏 API-Server Trust:
+●  The LDAP server trusts the API server to handle user verification. The API server has access to the LDAP data on behalf of users.
+
+
+🌏 JWT Token for User Authentication:
+👉 The API validates the JWT token, ensuring the user making the request is legitimate. Only if the token is valid, the API fetches the LDAP data.
+
+
+
+🛡️ Secure Communication:
+👉 All communication (APK <-> API, API <-> LDAP) happens over HTTPS, ensuring data is encrypted and secure.
+
+
+
+🛡️ Recap:
+     1. Login: User logs into the APK, and the API authenticates the user against the LDAP server.
+     2. JWT Token Issued: If authentication is successful, the API issues a JWT token to the APK.
+     3. Data Fetch Request: The APK requests data from the LDAP server via the API, attaching the JWT token.
+     4. API Verification: The API verifies the JWT token and ensures the user is authenticated.
+     5. Data Retrieval: The API fetches the requested data from the LDAP server and returns it to the APK.
+     6. This flow ensures both authentication (via the login process and JWT token) and authorization (via token verification before accessing LDAP data).
