@@ -38,19 +38,16 @@ Step-by-Step Flow:
 > Payload validation: The API verifies the user’s identity and permissions from the JWT payload.
 > If the JWT token is valid, the API proceeds to the next step. If not, it rejects the request.
 
-(●'◡'●)
-
 👉 API Fetches Data from LDAP:
- ● The API (which acts as a middleman or proxy) makes a request to the LDAP server to retrieve the data the user requested.
- ● The API can use the user’s identity (from the JWT) to fetch specific data related to that user.
+   ● The API (which acts as a middleman or proxy) makes a request to the LDAP server to retrieve the data the user requested.
+   ● The API can use the user’s identity (from the JWT) to fetch specific data related to that user.
  ● The LDAP server verifies that the API has legitimate access, as the API has already authenticated the user.
 
-
-🌏 Key Points in Verification:
-👉 The LDAP server trusts that the API is legitimate because:
-● The API is on a secure network and authorized to interact with the LDAP server.
-● The API may use a pre-configured service account or credentials to authenticate itself to the LDAP server, ensuring the call is legitimate.
-● The API is responsible for user verification, so LDAP doesn't need to re-check the user’s identity directly.
+     🌏 Key Points in Verification:
+       👉 The LDAP server trusts that the API is legitimate because:
+          ● The API is on a secure network and authorized to interact with the LDAP server.
+          ● The API may use a pre-configured service account or credentials to authenticate itself to the LDAP server, ensuring the call is legitimate.
+          ● The API is responsible for user verification, so LDAP doesn't need to re-check the user’s identity directly.
 
 
 
@@ -85,4 +82,4 @@ Step-by-Step Flow:
      3. Data Fetch Request: The APK requests data from the LDAP server via the API, attaching the JWT token.
      4. API Verification: The API verifies the JWT token and ensures the user is authenticated.
      5. Data Retrieval: The API fetches the requested data from the LDAP server and returns it to the APK.
-     6. This flow ensures both authentication (via the login process and JWT token) and authorization (via token verification before accessing LDAP data).
+     >> This flow ensures both authentication (via the login process and JWT token) and authorization (via token verification before accessing LDAP data).
